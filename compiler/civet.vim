@@ -1,33 +1,33 @@
-" Language:    LiveScript
-" Maintainer:  George Zahariev
-" URL:         http://github.com/gkz/vim-ls
+" Language:    Civet
+" Maintainer:  Igor Kaplounenko
+" URL:         https://github.com/IcarusMJ12/vim-civet
 " License:     WTFPL
-
+"
 if exists('current_compiler')
   finish
 endif
 
-let current_compiler = 'ls'
-" Pattern to check if livescript is the compiler
+let current_compiler = 'civet'
+" Pattern to check if civet is the compiler
 let s:pat = '^' . current_compiler
 
-" Path to LiveScript compiler
-if !exists('livescript_compiler')
-  let livescript_compiler = 'lsc'
+" Path to Civet compiler
+if !exists('civet_compiler')
+  let civet_compiler = 'civet'
 endif
 
-if !exists('livescript_make_options')
-  let livescript_make_options = ''
+if !exists('civet_make_options')
+  let civet_make_options = ''
 endif
 
 " Get a `makeprg` for the current filename. This is needed to support filenames
 " with spaces and quotes, but also not break generic `make`.
 function! s:GetMakePrg()
-  return g:livescript_compiler . ' -c ' . g:livescript_make_options . ' $* '
+  return g:civet_compiler . ' -c ' . g:civet_make_options . ' $* '
   \                      . fnameescape(expand('%'))
 endfunction
 
-" Set `makeprg` and return 1 if coffee is still the compiler, else return 0.
+" Set `makeprg` and return 1 if civet is still the compiler, else return 0.
 function! s:SetMakePrg()
   if &l:makeprg =~ s:pat
     let &l:makeprg = s:GetMakePrg()
@@ -41,7 +41,7 @@ function! s:SetMakePrg()
 endfunction
 
 " Set a dummy compiler so we can check whether to set locally or globally.
-CompilerSet makeprg=ls
+CompilerSet makeprg=civet
 call s:SetMakePrg()
 
 CompilerSet errorformat=%EFailed\ at:\ %f,
@@ -51,17 +51,17 @@ CompilerSet errorformat=%EFailed\ at:\ %f,
                        \%C,%C\ %.%#
 
 " Compile the current file.
-command! -bang -bar -nargs=* LiveScriptMake make<bang> <args>
+command! -bang -bar -nargs=* CM make<bang> <args>
 
 " Set `makeprg` on rename since we embed the filename in the setting.
-augroup LiveScriptUpdateMakePrg
+augroup CivetUpdateMakePrg
   autocmd!
 
-  " Update `makeprg` if livescript is still the compiler, else stop running this
+  " Update `makeprg` if civet is still the compiler, else stop running this
   " function.
   function! s:UpdateMakePrg()
     if !s:SetMakePrg()
-      autocmd! LiveScriptUpdateMakePrg
+      autocmd! CivetUpdateMakePrg
     endif
   endfunction
 

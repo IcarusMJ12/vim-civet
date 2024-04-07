@@ -1,8 +1,8 @@
-" Language:    LiveScript
-" Maintainer:  George Zahariev
-" URL:         http://github.com/gkz/vim-ls
+" Language:    Civet
+" Maintainer:  Igor Kaplounenko
+" URL:         https://github.com/IcarusMJ12/vim-civet
 " License:     WTFPL
-
+"
 if exists("b:did_indent")
   finish
 endif
@@ -10,13 +10,13 @@ endif
 let b:did_indent = 1
 
 setlocal autoindent
-setlocal indentexpr=GetLiveScriptIndent(v:lnum)
-" Make sure GetLiveScriptIndent is run when these are typed so they can be
+setlocal indentexpr=GetCivetIndent(v:lnum)
+" Make sure GetCivetIndent is run when these are typed so they can be
 " indented or outdented.
 setlocal indentkeys+=0],0),0.,=else,=when,=catch,=finally
 
 " Only define the function once.
-if exists("*GetLiveScriptIndent")
+if exists("*GetCivetIndent")
   finish
 endif
 
@@ -193,7 +193,7 @@ function! s:GetTrimmedLine(linenum)
   \                                                '\s\+$', '', '')
 endfunction
 
-function! s:GetLiveScriptIndent(curlinenum)
+function! s:GetCivetIndent(curlinenum)
   let prevlinenum = s:GetPrevNormalLine(a:curlinenum)
 
   " Don't do anything if there's no previous line.
@@ -254,10 +254,10 @@ function! s:GetLiveScriptIndent(curlinenum)
   return -1
 endfunction
 
-" Wrap s:GetLiveScriptIndent to keep the cursor position.
-function! GetLiveScriptIndent(curlinenum)
+" Wrap s:GetCivetIndent to keep the cursor position.
+function! GetCivetIndent(curlinenum)
   let oldcursor = getpos('.')
-  let indent = s:GetLiveScriptIndent(a:curlinenum)
+  let indent = s:GetCivetIndent(a:curlinenum)
   call setpos('.', oldcursor)
 
   return indent
